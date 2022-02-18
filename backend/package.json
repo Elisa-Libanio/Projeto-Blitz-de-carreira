@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index js",
-    "dev": "nodemon .",
-    "lint": "eslint --no-inline-config --ext .js,.jsx --no-error-on-unmatched-pattern -c .eslintrc.json ."
+    "dev": "nodemon ."
   },
   "keywords": [],
   "author": "",

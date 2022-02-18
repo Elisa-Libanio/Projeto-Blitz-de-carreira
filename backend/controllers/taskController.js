@@ -1,4 +1,4 @@
-const { listTasks ,createTask, getTaskId } = require('../services/taskService')
+const { listTasks, createTask, getTaskId, updateStatus, removeTaskSer } = require('../services/taskService');
 
 const listTaskController = async (_req, res, next) => {
   try {
@@ -10,44 +10,51 @@ const listTaskController = async (_req, res, next) => {
   }
 };
 
-
-
-
 const createTaskController = async (req, res, next) => {
-    try {
-  const { tarefa, status } = req.body;
-//   const { authorization: token } = req.headers;
-  
-   const task = await createTask( tarefa, status );
-   return res.status(201).json(task);
- } catch (error) { 
-  return next(error);
-  }
- };
-
- const getTaskById = async (req, res, next) => {
   try {
-      const { id } = req.params;
+    const { tarefa, status } = req.body;
+    //   const { authorization: token } = req.headers;
 
+    const task = await createTask(tarefa, status);
+    return res.status(201).json(task);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const getTaskById = async (req, res) => {
+  try {
+    const { id } = req.params;
     const task = await getTaskId(id);
     return res.status(200).json(task);
   } catch (err) {
-    console.log(err);
+    return err;
+    // next(err);
+  }
+};
+
+const updateTask = async (req, res, next) => { // atualizar o que? o status?
+  try {
+    const { id } = req.params;
+    const upTask = await updateStatus(id, req.body);
+    console.log(upTask, 'uptaskcontroller');
+    return res.status(200).json(upTask);
+  } catch (err) {
     next(err);
   }
 };
 
-//  const updateTask = async (req,res,next ) => { //atualizar o que? o status? 
-//    try {
-//     const { id } = req.params;
-//     const upTask = await updateStatus(id, req.body);
-//     return res.status(200).json(upTask);
+const removeTask = async (req, res, next) => { // atualizar o que? o status?
+  try {
+    const { id } = req.params;
+    const delTask = await removeTaskSer(id);
+    console.log(delTask, 'DELtaskcontroller');
+    return res.status(204).json(delTask);
+  } catch (err) {
+    next(err);
+  }
+};
 
-//    } catch (err) {
-//      next(err)
-//    }
-//  }
-
-
-
-module.exports = { createTaskController, listTaskController, getTaskById }
+module.exports = {
+  createTaskController, listTaskController, getTaskById, updateTask, removeTask,
+};
